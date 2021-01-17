@@ -22,11 +22,11 @@ while True:  # Event Loop
             yt = YouTube(link)
             window['-OUTPUT-'].update(yt.title, text_color=('black'))
             window.FindElement('Download').Update('Download', disabled=False, button_color=('white', 'green'))
-
+            print(YouTube(link).thumbnail_url)
         except:
             window['-OUTPUT-'].update('Not a youtube video', text_color=('red'))
             window.FindElement('Download').Update('Download', disabled=True, button_color=('white', 'red'))
     elif event == 'Download':
         YouTube(link).streams.first().download()
-
+        YouTube(link).thumbnail_url
 window.close()
