@@ -1,10 +1,14 @@
 import PySimpleGUI as sg
+from PIL import Image
+import requests
+from io import BytesIO
 from pytube import YouTube
 
-#ADD THEME
-
+#Fix later
+image_element = sg.Image(filename='test.PNG')
 
 layout = [[sg.Text('Title:'), sg.Text(size=(15, 1), key='-OUTPUT-')],
+          [image_element],
           [sg.Input(key='-IN-')],
           [sg.Button('Load'), sg.Button('Download', disabled=True, button_color=('white', 'red')), sg.Button('Exit')]]
 
@@ -23,6 +27,13 @@ while True:  # Event Loop
             window['-OUTPUT-'].update(yt.title, text_color=('black'))
             window.FindElement('Download').Update('Download', disabled=False, button_color=('white', 'green'))
             print(YouTube(link).thumbnail_url)
+
+            #IMG FIX LATER
+            url_thumbnail = YouTube(link).thumbnail_url
+            response = requests.get(url_thumbnail, stream=True)
+            img = Image.open(response.raw)
+            img = img.save("thumbnail_temporary.png")
+            image_element.update('thumbnail_temporary.png')
         except:
             window['-OUTPUT-'].update('Not a youtube video', text_color=('red'))
             window.FindElement('Download').Update('Download', disabled=True, button_color=('white', 'red'))
