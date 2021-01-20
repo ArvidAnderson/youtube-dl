@@ -1,6 +1,5 @@
+import image_downloader
 import PySimpleGUI as sg
-from PIL import Image
-import requests #For thumbnail url img
 from pytube import YouTube
 
 sg.LOOK_AND_FEEL_TABLE['YOUTUBE_THEME_ARVID'] = {'BACKGROUND': '#282828',
@@ -17,13 +16,14 @@ sg.theme('YOUTUBE_THEME_ARVID')
 
 #Fix later
 image_element = sg.Image(filename='logo.png')
+img_res = 366, 188
 
-layout = [[sg.Text('No YouTube video selected', text_color=('red')), sg.Text(size=(45, 1), key='-OUTPUT-')],
+layout = [[sg.Text('No YouTube video selected',  text_color=('red')), sg.Text(size=(45, 1), key='-OUTPUT-')],
           [image_element],
           [sg.Input(key='-IN-')],
           [sg.Button('Load'), sg.Button('Download', disabled=True, button_color=('white', 'red')), sg.Button('Exit')]]
 
-window = sg.Window('Arvid', layout, size=(350, 300))
+window = sg.Window('Arvid', layout, resizable=False, size=(350, 300))
 
 
 while True:  # Event Loop
@@ -38,13 +38,8 @@ while True:  # Event Loop
             yt = YouTube(link)
             window['-OUTPUT-'].update(yt.title, text_color=('#FFFFFF'))
             window.FindElement('Download').Update('Download', disabled=False, button_color=('white', 'green'))
-            print(YouTube(link).thumbnail_url)
-            #IMG
             url_thumbnail = YouTube(link).thumbnail_url
-            response = requests.get(url_thumbnail, stream=True)
-            img = Image.open(response.raw)
-            img = img.save("thumbnail_temporary.png")
-            image_element.update('thumbnail_temporary.png')
+            image_element.update(image_downloader.dl_thumbnail_url(url_thumbnail, img_res))
         except:
             window['-OUTPUT-'].update('Not a youtube video', text_color=('red'))
             window.FindElement('Download').Update('Download', disabled=True, button_color=('white', 'red'))
