@@ -1,14 +1,4 @@
-# arvid-anderson-te19d-kursolle
+# Arvid Anderson
 
-##### Youtube Downloader med en GUI gjord med pysimplegui, innehåller även notifications med win10toast (kör på win10)
+##### Youtube Downloader with pysimplegui, very basic functionallity!
 
-# TODO
-## Grep Title
-## Automatic clipboard paste
-## Window Size
-## Font Size
-## Color
-## Background image
-## Toaster
-## Custom Sound
-## Active Window
